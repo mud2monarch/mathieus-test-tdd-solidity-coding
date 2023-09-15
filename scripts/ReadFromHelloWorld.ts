@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import 'dotenv/config';
-import { HelloWorld__factory } from "../typechain-types";
+import { HelloWorld, HelloWorld__factory } from "../typechain-types";
 
 async function main () {
     const rpcUrl = process.env.RPC_URL;
@@ -19,11 +19,7 @@ async function main () {
     console.log(`The balance of the deployer is ${ethers.formatEther(deployerBalance)} BNB.`);
 
     const helloWorldFactory = new HelloWorld__factory(deployer);
-    const helloWorldContract = await helloWorldFactory.deploy();
-    await helloWorldContract.waitForDeployment();
-
-    const helloWorldContractAddress = await helloWorldContract.getAddress();
-    console.log(`The address of the smart contract is ${helloWorldContractAddress}`);
+    const helloWorldContract = helloWorldFactory.attach("0xb010c76ae808232107868e2509a6207e29120397") as HelloWorld;
 
     const helloWorld = await helloWorldContract.helloWorld();
     console.log(`The text stored in the contracts is ${ethers.decodeBytes32String(helloWorld)}.`);
